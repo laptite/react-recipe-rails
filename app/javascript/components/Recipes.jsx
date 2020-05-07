@@ -69,7 +69,10 @@ class Recipes extends Component {
             <div className="row">
               {recipes.length > 0 ? allRecipes : noRecipe}
             </div>
-            <Link to="/" className="btn btn-link">Home</Link>
+            <Link to="/" className="btn btn-link">
+              &#8249;
+              Back to Home
+            </Link>
           </main>
         </div>
       </>
