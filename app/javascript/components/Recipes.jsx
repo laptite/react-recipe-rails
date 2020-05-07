@@ -16,7 +16,7 @@ class Recipes extends Component {
         if (response.ok) {
           return response.json();
         }
-        throw new Error('Network response error');
+        throw new Error('Network not responding');
       })
       .then(response => this.setState({ recipes: response }))
       .catch(() => this.props.history.push('/'));
