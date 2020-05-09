@@ -6,10 +6,6 @@ const NewRecipe = (props) => {
 
   const [recipe, setRecipe] = useState({});
 
-  // const addRecipe = (recipe) => {
-  //   setRecipe([...recipes, recipe]);
-  // }
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setRecipe({ ...recipe, [name]: value });
