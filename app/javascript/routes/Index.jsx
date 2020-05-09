@@ -12,6 +12,9 @@ export default (
       <Route path="/recipes" exact component={Recipes} />
       <Route path="/recipe/:id" exact component={Recipe} />
       <Route path="/recipe" exact component={NewRecipe} />
+      {/*
+        <Route path="/recipe/edit/:id" exact component={EditRecipe} />
+      */ }
     </Switch>
   </Router>
 );
