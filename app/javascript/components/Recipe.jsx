@@ -8,8 +8,8 @@ const Recipe = (props) => {
     ingredients: '',
     directions: ''
   }
-  const [recipe, setRecipe] = useState(initialFormState)
-  const id = props.match.params.id
+  const [recipe, setRecipe] = useState(initialFormState);
+  const id = props.match.params.id;
 
   const getRecipe = () => {
     fetch(`/api/v1/show/${id}`)
