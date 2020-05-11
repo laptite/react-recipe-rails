@@ -1,5 +1,5 @@
 class Api::V1::RecipesController < ApplicationController
-  before_action :find_recipe, only: [:show, :destroy]
+  before_action :find_recipe, only: [:show, :update, :destroy]
 
   def index
     @recipe = Recipe.all.order(created_at: :desc)
@@ -18,6 +18,14 @@ class Api::V1::RecipesController < ApplicationController
   def show
     if @recipe
       render json: @recipe
+    else
+      render json: @recipe.errors
+    end
+  end
+
+  def update
+    if @recipe.update_attributes(recipe_params)
+      render json: { message: 'Recipe has been updated' }
     else
       render json: @recipe.errors
     end
