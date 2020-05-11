@@ -1,49 +1,33 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
-class Recipe extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { recipe: { ingredients: ''}};
-    this.addHtmlEntities = this.addHtmlEntities.bind(this);
-    this.deleteRecipe = this.deleteRecipe.bind(this);
+const Recipe = (props) => {
+  const initialFormState = {
+    id: null,
+    name: '',
+    ingredients: '',
+    directions: ''
   }
+  const [recipe, setRecipe] = useState(initialFormState);
+  const id = props.match.params.id;
 
-  componentDidMount() {
-    const {
-      match: {
-        params: { id }
-      }
-    } = this.props;
-
-    const url = `/api/v1/show/${id}`;
-
-    fetch(url)
+  const getRecipe = () => {
+    fetch(`/api/v1/show/${id}`)
       .then(response => {
         if (response.ok) {
           return response.json();
         }
         throw new Error('Network not responding');
       })
-      .then(response => this.setState({recipe: response}))
-      .catch(() => this.props.history.push('/recipes'));
+      .then(response => setRecipe(response))
+      .catch(error => props.history.push('/recipes'));
   }
 
-  addHtmlEntities(str) {
-    return String(str)
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-  }
-
-  deleteRecipe() {
-    const {
-      match: {
-        params: { id }
-      }
-    } = this.props;
-    const url = `/api/v1/destroy/${id}`;
+  const deleteRecipe = () => {
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch(url, {
+    
+    fetch(`/api/v1/destroy/${id}`, {
       method: "DELETE",
       headers: {
         "X-CSRF-Token": token,
@@ -56,70 +40,81 @@ class Recipe extends Component {
         }
         throw new Error('Network not responding');
       })
-      .then(() => this.props.history.push("/recipes"))
-      .catch(error => console.log(error.message));
+      .then(() => props.history.push("/recipes"))
+      .catch(error => console.log(error.messages));
   }
 
-  render() {
-    const { recipe } = this.state;
-    let ingredientList = 'No ingredients';
+  const addHtmlEntities = (str) => {
+    return String(str)
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+  }
 
-    if (recipe.ingredients.length > 0) {
-      ingredientList = recipe.ingredients
-        .split(',')
-        .map((ingredient, index) => (
-          <li key={index} className="list-group-item">
-            {ingredient}
-          </li>
-        ));
-    }
-    const recipeDirections = this.addHtmlEntities(recipe.directions);
+  const recipeDirections = addHtmlEntities(recipe.directions);
 
-    return(
-      <div className="">
-        <div className="hero position-relative d-flex align-items-center justify-content-center">
-          <img
-            src={recipe.image}
-            alt={`${recipe.name} image`}
-            className="img-fluid position-absolute"
-          />
-          <div className="overlay bg-dark position-absolute" />
-          <h1 className="display-4 position-relative text-white">
-            {recipe.name}
-          </h1>
-        </div>
-        <div className="container py-5">
-          <div className="row">
-            <div className="col-sm-12 col-lg-3">
-              <ul className="list-group">
-                <h5 className="mb-2">Ingredients</h5>
-                {ingredientList}
-              </ul>
-            </div>
-            <div className="col-sm-12 col-lg-7">
-              <h5 className="mb-2">Directions</h5>
-              <div
-                dangeroussetinnerhtml={{
-                  __html: `${recipeDirections}`
-                }}
-              />
-            </div>
-            <div className="col-sm-12 col-lg-2">
-              <button 
-                type="button" 
-                className="btn btn-danger" 
-                onClick={this.deleteRecipe} 
-              >Delete Recipe
-              </button>
-            </div>
+  let ingredientList = 'No ingredients';
+  if (recipe.ingredients.length > 0) {
+    ingredientList = recipe.ingredients
+      .split(',')
+      .map((ingredient, index) => (
+        <li key={index} className="list-group-item">
+          {ingredient}
+        </li>
+      ));
+  }
+
+  useEffect(() => {
+    getRecipe();
+  }, []);
+
+  return (
+    <div className="">
+      <div className="hero position-relative d-flex align-items-center justify-content-center">
+        <img
+          src={recipe.image}
+          alt={`${recipe.name} image`}
+          className="img-fluid position-absolute"
+        />
+        <div className="overlay bg-dark position-absolute" />
+        <h1 className="display-4 position-relative text-white">
+          {recipe.name}
+        </h1>
+      </div>
+      <div className="container py-5">
+        <div className="row">
+          <div className="col-sm-12 col-lg-3">
+            <ul className="list-group">
+              <h5 className="mb-2">Ingredients</h5>
+              {ingredientList}
+            </ul>
           </div>
-          <Link to="/recipes" className="btn btn-link">
-            Back to Recipes
-          </Link>
-         </div>
+          <div className="col-sm-12 col-lg-7">
+            <h5 className="mb-2">Directions</h5>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `${recipeDirections}`
+              }}
+            />
+          </div>
+          <div className="col-sm-12 col-lg-2">
+            <Link
+              to={`/recipe/edit/${recipe.id}`}
+              className="btn btn-light">Edit
+            </Link>
+            <Button
+              action={deleteRecipe}
+              title={'Delete'}
+              klass={'btn btn-danger'}
+            />
+          </div>
         </div>
-    );
-  }
+        <Link to="/" className="btn btn-link">
+          &#8249;
+          Back to Home
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 export default Recipe;

@@ -3,7 +3,7 @@ import React from 'react';
 const Button = (props) => (
   <button 
     style={props.style} 
-    className={props.type === 'primary'? 'btn btn-primary' : 'btn btn-secondary'}
+    className={props.klass}
     onClick={props.action} >
     {props.title} 
   </button>

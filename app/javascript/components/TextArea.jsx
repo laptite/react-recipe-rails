@@ -9,7 +9,7 @@ const TextArea = (props) => (
       name={props.name}
       rows={props.rows}
       cols={props.cols}
-      value={props.value}
+      defaultValue={props.value}
       onChange={props.handleChange}
       placeholder={props.placeholder}
     />
