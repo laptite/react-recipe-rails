@@ -51,7 +51,8 @@ const NewRecipe = (props) => {
                 id="recipeName"
                 name="name"
                 required
-                onChange={handleInputChange} 
+                onChange={handleInputChange}
+                placeholder="Enter Recipe Name"
               />
             </div>
             <div className="form-group">
