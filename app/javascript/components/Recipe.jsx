@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Recipe = (props) => {
-  const [recipe, setRecipe] = useState({ ingredients: ''})
+  const initialFormState = {
+    id: null,
+    name: '',
+    ingredients: '',
+    directions: ''
+  }
+  const [recipe, setRecipe] = useState(initialFormState)
   const id = props.match.params.id
 
   const getRecipe = () => {
@@ -90,16 +96,21 @@ const Recipe = (props) => {
             />
           </div>
           <div className="col-sm-12 col-lg-2">
+            <Link
+              to={`/recipe/edit/${recipe.id}`}
+              className="btn btn-light">Edit
+            </Link>
             <button 
               type="button" 
               className="btn btn-danger" 
-              onClick={deleteRecipe} 
+              onClick={deleteRecipe}
             >Delete Recipe
             </button>
           </div>
         </div>
-        <Link to="/recipes" className="btn btn-link">
-          Back to Recipes
+        <Link
+          to="/recipes"
+          className="btn btn-link">Back to Recipes
         </Link>
       </div>
     </div>

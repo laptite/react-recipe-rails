@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Recipes = () => {
+const Recipes = (props) => {
   const [recipes, setRecipes] = useState([]); 
   
   const getRecipes = () => {
@@ -36,8 +36,11 @@ const Recipes = () => {
   const noRecipe = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>
-        No recipes yet. Why not 
-        <Link to={`/new_recipe`}>&nbsp;create one</Link>
+        No recipes yet. Why not
+        <Link
+          label="new"
+          to={`/new_recipe`}>&nbsp;create one
+        </Link>
       </h4>
     </div>
   );
