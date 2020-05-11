@@ -1,5 +1,5 @@
 class Api::V1::RecipesController < ApplicationController
-  before_action :find_recipe, only: [:show, :destroy]
+  before_action :find_recipe, only: [:show, :edit, :update, :destroy]
 
   def index
     @recipe = Recipe.all.order(created_at: :desc)
@@ -15,8 +15,24 @@ class Api::V1::RecipesController < ApplicationController
     end
   end
 
+  def edit
+    if @recipe
+      render json: @recipe
+    else
+      render json: @recipe.errors
+    end
+  end
+
   def show
     if @recipe
+      render json: @recipe
+    else
+      render json: @recipe.errors
+    end
+  end
+
+  def update
+    if @recipe.update_attributes(recipe_params)
       render json: @recipe
     else
       render json: @recipe.errors
@@ -31,7 +47,7 @@ class Api::V1::RecipesController < ApplicationController
   private
 
     def recipe_params
-      params[:recipe].permit(:name, :image, :ingredients, :directions, :notes)
+      params[:recipe].permit(:id, :name, :image, :ingredients, :directions, :notes, :created_at, :updated_at)
     end
 
     def find_recipe

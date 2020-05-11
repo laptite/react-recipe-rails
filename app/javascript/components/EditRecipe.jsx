@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
-import FormContainer from '../containers/FormContainer';
+import React, { Component, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const NewRecipe = (props) => {
+const EditRecipe = (props) => {
+  const initialFormState = {
+    id: null,
+    name: '',
+    ingredients: '',
+    directions: ''
+  }
+  const [recipe, setRecipe] = useState(initialFormState)
+  const id = props.match.params.id
 
-  const [recipe, setRecipe] = useState({});
+  const getRecipe = () => {
+    fetch(`/api/v1/edit/${id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network not responding');
+      })
+      .then(response => setRecipe(response))
+      .catch(error => props.history.push('/recipes'));
+  }
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -16,8 +33,8 @@ const NewRecipe = (props) => {
     if (!recipe.name) return;
     const token = document.querySelector('meta[name="csrf-token"]').content;
 
-    fetch('/api/v1/recipes/create', {
-      method: "POST",
+    fetch(`/api/v1/update/${id}`, {
+      method: "PUT",
       headers: {
         "X-CSRF-Token": token,
         "Content-Type": "application/json"
@@ -35,34 +52,40 @@ const NewRecipe = (props) => {
       .catch(error => console.log(error.message));
   }
 
+  useEffect(() => {
+    getRecipe();
+  }, []);
+
   return (
     <div className="container mt-5">
       <div className="row">
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">
-            Add a new recipe to our awesome recipe collection.
+            Edit Recipe
           </h1>
           <form onSubmit={handleSubmit} >
             <div className="form-group">
               <label htmlFor="recipeName">Name</label>
-              <input 
+              <input
                 className="form-control"
-                type="text" 
+                type="text"
                 id="recipeName"
                 name="name"
+                value={recipe.name}
                 required
-                onChange={handleInputChange} 
+                onChange={handleInputChange}
               />
             </div>
             <div className="form-group">
               <label htmlFor="recipeIngredients">Ingredients</label>
-              <input 
+              <input
                 className="form-control"
-                type="text" 
+                type="text"
                 id="recipeIngredients"
                 name="ingredients"
+                value={recipe.ingredients}
                 onChange={handleInputChange}
-                placeholder="Separate each ingredient with a comma" 
+                placeholder="Separate each ingredient with a comma"
               />
             </div>
             <div className="form-group">
@@ -71,6 +94,7 @@ const NewRecipe = (props) => {
                 className="form-control"
                 id="recipeDirections"
                 name="directions"
+                value={recipe.directions}
                 rows="10"
                 onChange={handleInputChange}
                 placeholder="Enter recipe preparation details"
@@ -78,10 +102,10 @@ const NewRecipe = (props) => {
             </div>
             <button
               type="submit"
-              className="btn custom-button mt-3">Create Recipe
+              className="btn custom-button mt-3">Update Recipe
             </button>
-            <Link 
-              to="/recipes" 
+            <Link
+              to="/recipes"
               className="btn btn-link mt-3">Back to recipes
             </Link>
           </form>
@@ -91,4 +115,4 @@ const NewRecipe = (props) => {
   )
 }
 
-export default NewRecipe;
+export default EditRecipe;
