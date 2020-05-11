@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Button from './Button';
 
 const Recipe = (props) => {
   const initialFormState = {
@@ -100,17 +101,16 @@ const Recipe = (props) => {
               to={`/recipe/edit/${recipe.id}`}
               className="btn btn-light">Edit
             </Link>
-            <button 
-              type="button" 
-              className="btn btn-danger" 
-              onClick={deleteRecipe}
-            >Delete Recipe
-            </button>
+            <Button
+              action={deleteRecipe}
+              title={'Delete'}
+              klass={'btn btn-danger'}
+            />
           </div>
         </div>
-        <Link
-          to="/recipes"
-          className="btn btn-link">Back to Recipes
+        <Link to="/" className="btn btn-link">
+          &#8249;
+          Back to Home
         </Link>
       </div>
     </div>

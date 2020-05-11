@@ -9,7 +9,7 @@ const Input = (props) => {
         type={props.inputType}
         id={props.id}
         name={props.name}
-        value={props.value}
+        defaultValue={props.value}
         onChange={props.handleChange}
         placeholder={props.placeholder}
         required={props.required}
