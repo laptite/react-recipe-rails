@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FormContainer from '../containers/FormContainer';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NewRecipe = (props) => {
 
