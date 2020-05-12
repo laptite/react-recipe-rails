@@ -69,6 +69,8 @@ $ yarn add react-router-dom bootstrap jquery popper.js
 
 * **Database seeding:** rake db:seeds
 
+* **Application initialization:** bin/rails s
+
 * **How to run the test suite:** N/A
 
 * **Services (job queues, cache servers, search engines, etc.):** N/A
