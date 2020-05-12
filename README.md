@@ -13,7 +13,7 @@ This application is a "React on Rails" app that I created to learn how to:
 
 * **Extracting form components:** [Codementor Article](https://www.codementor.io/@blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y)
 
-* **Installation:** Many of the comments within the article demonstrate how just following the instructions led to installation difficulties. My steps outlined below under Configuration avoided many of the stated problems. Note the updated webpacker flag: `--webpacker=react` as opposed to the previous: `--webpack=react`
+* **Installation:** Many of the comments after the article demonstrate how just following the instructions led to installation difficulties. My steps outlined below under Configuration avoided many of the stated problems. Note the updated webpacker flag: `--webpacker=react` as opposed to the previous: `--webpack=react`
 
 * **CRUD -- Pluses:** Most React tutorials address forms by covering a basic single input. This one covers a more realistic application AND it gives a clear example on handling JSON responses with react-router, which is really the kind of paradigm that most Rails developers IMO are more keen to learn as interests shift to JS frontend frameworks and libraries.
 
